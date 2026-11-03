@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:m="clr-namespace:TDE3_BancoDeDados.Models"
+             x:Class="TDE3_BancoDeDados.Views.ClientesPage"
+             Title="Cadastro de Clientes">
+
+    <Grid RowDefinitions="Auto,Auto,*" Padding="16" RowSpacing="12">
+
+        <!-- Formulário -->
+        <VerticalStackLayout Spacing="8">
+            <Label x:Name="LblModo" Text="Novo cliente" FontSize="18" FontAttributes="Bold" />
+            <Entry x:Name="TxtNome" Placeholder="Nome" MaxLength="50" />
+            <Entry x:Name="TxtRg" Placeholder="RG (somente números)" Keyboard="Numeric" MaxLength="10" />
+            <Entry x:Name="TxtTelefone" Placeholder="Telefone - ex: (41)99999-9999" Keyboard="Telephone" MaxLength="14" />
+            <HorizontalStackLayout Spacing="8">
+                <Button Text="Salvar" Clicked="OnSalvarClicked" />
+                <Button Text="Limpar" Clicked="OnLimparClicked" BackgroundColor="Gray" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <SearchBar Grid.Row="1" x:Name="TxtBusca" Placeholder="Buscar por nome" TextChanged="OnBuscaChanged" />
+
+        <!-- Lista -->
+        <CollectionView Grid.Row="2" x:Name="Lista" SelectionMode="None">
+            <CollectionView.EmptyView>
+                <Label Text="Nenhum cliente cadastrado." HorizontalOptions="Center" Margin="0,24" />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:Cliente">
+                    <Border Padding="12" Margin="0,4" StrokeShape="RoundRectangle 8">
+                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                            <VerticalStackLayout VerticalOptions="Center">
+                                <Label Text="{Binding Nome}" FontAttributes="Bold" />
+                                <Label Text="{Binding RG, StringFormat='RG: {0}'}" FontSize="12" />
+                                <Label Text="{Binding Telefone, StringFormat='Telefone: {0}'}" FontSize="12" />
+                            </VerticalStackLayout>
+                            <Button Grid.Column="1" Text="Editar" Clicked="OnEditarClicked" />
+                            <Button Grid.Column="2" Text="Excluir" Clicked="OnExcluirClicked" BackgroundColor="#C62828" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+</ContentPage>

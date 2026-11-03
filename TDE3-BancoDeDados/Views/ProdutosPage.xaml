@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:m="clr-namespace:TDE3_BancoDeDados.Models"
+             x:Class="TDE3_BancoDeDados.Views.ProdutosPage"
+             Title="Cadastro de Produtos">
+
+    <Grid RowDefinitions="Auto,Auto,*" Padding="16" RowSpacing="12">
+
+        <!-- Formulário -->
+        <VerticalStackLayout Spacing="8">
+            <Label x:Name="LblModo" Text="Novo produto" FontSize="18" FontAttributes="Bold" />
+            <Entry x:Name="TxtNome" Placeholder="Nome do produto" MaxLength="50" />
+            <Entry x:Name="TxtTipo" Placeholder="Tipo (ex: Bebida, Limpeza)" MaxLength="50" />
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                <Entry x:Name="TxtPreco" Placeholder="Preço (ex: 19,90)" Keyboard="Numeric" />
+                <Entry Grid.Column="1" x:Name="TxtEstoque" Placeholder="Qtd. em estoque" Keyboard="Numeric" />
+            </Grid>
+            <HorizontalStackLayout Spacing="8">
+                <Button Text="Salvar" Clicked="OnSalvarClicked" />
+                <Button Text="Limpar" Clicked="OnLimparClicked" BackgroundColor="Gray" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <SearchBar Grid.Row="1" x:Name="TxtBusca" Placeholder="Buscar por nome ou tipo" TextChanged="OnBuscaChanged" />
+
+        <!-- Lista -->
+        <CollectionView Grid.Row="2" x:Name="Lista" SelectionMode="None">
+            <CollectionView.EmptyView>
+                <Label Text="Nenhum produto cadastrado." HorizontalOptions="Center" Margin="0,24" />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:Produto">
+                    <Border Padding="12" Margin="0,4" StrokeShape="RoundRectangle 8">
+                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                            <VerticalStackLayout VerticalOptions="Center">
+                                <Label Text="{Binding NomeProduto}" FontAttributes="Bold" />
+                                <Label Text="{Binding Tipo, StringFormat='Tipo: {0}'}" FontSize="12" />
+                                <Label Text="{Binding Preco, StringFormat='Preço: {0:C}'}" FontSize="12" />
+                                <Label Text="{Binding QtdEstoque, StringFormat='Estoque: {0}'}" FontSize="12" />
+                            </VerticalStackLayout>
+                            <Button Grid.Column="1" Text="Editar" Clicked="OnEditarClicked" />
+                            <Button Grid.Column="2" Text="Excluir" Clicked="OnExcluirClicked" BackgroundColor="#C62828" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+</ContentPage>

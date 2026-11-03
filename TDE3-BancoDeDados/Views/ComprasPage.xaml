@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:m="clr-namespace:TDE3_BancoDeDados.Models"
+             x:Class="TDE3_BancoDeDados.Views.ComprasPage"
+             Title="Compras">
+
+    <Grid RowDefinitions="Auto,*" Padding="16" RowSpacing="12">
+
+        <Button Text="Nova compra" Clicked="OnNovaClicked" />
+
+        <CollectionView Grid.Row="1" x:Name="Lista" SelectionMode="None">
+            <CollectionView.EmptyView>
+                <Label Text="Nenhuma compra registrada." HorizontalOptions="Center" Margin="0,24" />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:Compra">
+                    <Border Padding="12" Margin="0,4" StrokeShape="RoundRectangle 8">
+                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                            <VerticalStackLayout VerticalOptions="Center">
+                                <Label FontAttributes="Bold">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding CodigoCompra, StringFormat='Compra #{0} - '}" />
+                                            <Span Text="{Binding DataCompra, StringFormat='{0:dd/MM/yyyy}'}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label Text="{Binding Cliente.Nome, StringFormat='Cliente: {0}'}" FontSize="12" />
+                                <Label Text="{Binding Itens.Count, StringFormat='Itens: {0}'}" FontSize="12" />
+                                <Label Text="{Binding ValorTotal, StringFormat='Total: {0:C}'}" FontSize="12" />
+                            </VerticalStackLayout>
+                            <Button Grid.Column="1" Text="Abrir" Clicked="OnAbrirClicked" />
+                            <Button Grid.Column="2" Text="Excluir" Clicked="OnExcluirClicked" BackgroundColor="#C62828" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+</ContentPage>

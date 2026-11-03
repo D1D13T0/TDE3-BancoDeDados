@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TDE3_BancoDeDados.MainPage"
+             Title="Menu Principal">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="16" VerticalOptions="Center" MaximumWidthRequest="500">
+
+            <Label Text="Loja - Banco de Dados"
+                   FontSize="26"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+
+            <Label Text="Escolha uma opção"
+                   FontSize="16"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,16" />
+
+            <Button Text="Cadastro de Clientes"
+                    FontSize="18"
+                    HeightRequest="60"
+                    Clicked="OnClientesClicked" />
+
+            <Button Text="Cadastro de Produtos"
+                    FontSize="18"
+                    HeightRequest="60"
+                    Clicked="OnProdutosClicked" />
+
+            <Button Text="Compras"
+                    FontSize="18"
+                    HeightRequest="60"
+                    Clicked="OnComprasClicked" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

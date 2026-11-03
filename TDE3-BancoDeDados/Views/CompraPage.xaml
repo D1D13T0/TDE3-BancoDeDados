@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:m="clr-namespace:TDE3_BancoDeDados.Models"
+             x:Class="TDE3_BancoDeDados.Views.CompraPage"
+             Title="Compra">
+
+    <Grid RowDefinitions="Auto,Auto,*" Padding="16" RowSpacing="12">
+
+        <!-- Dados da compra -->
+        <Border Padding="12" StrokeShape="RoundRectangle 8">
+            <VerticalStackLayout Spacing="8">
+                <Label x:Name="LblCompra" Text="Nova compra" FontSize="18" FontAttributes="Bold" />
+                <Picker x:Name="PckCliente" Title="Cliente" />
+                <HorizontalStackLayout Spacing="8">
+                    <Label Text="Data:" VerticalOptions="Center" />
+                    <DatePicker x:Name="DtpData" Format="dd/MM/yyyy" />
+                </HorizontalStackLayout>
+                <Label x:Name="LblTotal" Text="Valor total: R$ 0,00" FontSize="16" FontAttributes="Bold" />
+                <Button Text="Salvar compra" Clicked="OnSalvarCompraClicked" />
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- Inclusão / edição de item -->
+        <Border Grid.Row="1" x:Name="PainelItem" Padding="12" StrokeShape="RoundRectangle 8" IsEnabled="False">
+            <VerticalStackLayout Spacing="8">
+                <Label x:Name="LblItem" Text="Adicionar item (salve a compra primeiro)" FontAttributes="Bold" />
+                <Picker x:Name="PckProduto" Title="Produto" />
+                <Entry x:Name="TxtQuantidade" Placeholder="Quantidade" Keyboard="Numeric" />
+                <HorizontalStackLayout Spacing="8">
+                    <Button x:Name="BtnSalvarItem" Text="Adicionar item" Clicked="OnSalvarItemClicked" />
+                    <Button Text="Cancelar" Clicked="OnCancelarItemClicked" BackgroundColor="Gray" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- Itens da compra -->
+        <CollectionView Grid.Row="2" x:Name="ListaItens" SelectionMode="None">
+            <CollectionView.Header>
+                <Label Text="Itens da compra" FontAttributes="Bold" Margin="0,0,0,4" />
+            </CollectionView.Header>
+            <CollectionView.EmptyView>
+                <Label Text="Nenhum item adicionado." HorizontalOptions="Center" Margin="0,24" />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:ItemCompra">
+                    <Border Padding="12" Margin="0,4" StrokeShape="RoundRectangle 8">
+                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                            <VerticalStackLayout VerticalOptions="Center">
+                                <Label Text="{Binding Produto.NomeProduto}" FontAttributes="Bold" />
+                                <Label Text="{Binding Quantidade, StringFormat='Quantidade: {0}'}" FontSize="12" />
+                                <Label Text="{Binding ValorParcial, StringFormat='Valor parcial: {0:C}'}" FontSize="12" />
+                            </VerticalStackLayout>
+                            <Button Grid.Column="1" Text="Editar" Clicked="OnEditarItemClicked" />
+                            <Button Grid.Column="2" Text="Excluir" Clicked="OnExcluirItemClicked" BackgroundColor="#C62828" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+</ContentPage>
