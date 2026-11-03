@@ -3,45 +3,91 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:m="clr-namespace:TDE3_BancoDeDados.Models"
              x:Class="TDE3_BancoDeDados.Views.ClientesPage"
-             Title="Cadastro de Clientes">
+             Title="Clientes">
 
-    <Grid RowDefinitions="Auto,Auto,*" Padding="16" RowSpacing="12">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14" MaximumWidthRequest="760">
 
-        <!-- Formulário -->
-        <VerticalStackLayout Spacing="8">
-            <Label x:Name="LblModo" Text="Novo cliente" FontSize="18" FontAttributes="Bold" />
-            <Entry x:Name="TxtNome" Placeholder="Nome" MaxLength="50" />
-            <Entry x:Name="TxtRg" Placeholder="RG (somente números)" Keyboard="Numeric" MaxLength="10" />
-            <Entry x:Name="TxtTelefone" Placeholder="Telefone - ex: (41)99999-9999" Keyboard="Telephone" MaxLength="14" />
-            <HorizontalStackLayout Spacing="8">
-                <Button Text="Salvar" Clicked="OnSalvarClicked" />
-                <Button Text="Limpar" Clicked="OnLimparClicked" BackgroundColor="Gray" />
-            </HorizontalStackLayout>
-        </VerticalStackLayout>
+            <!-- Formulário -->
+            <Border Style="{StaticResource Cartao}">
+                <VerticalStackLayout Spacing="12">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Border Style="{StaticResource Avatar}">
+                            <Label Text="👤" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label x:Name="LblModo" Text="Novo cliente" Style="{StaticResource Titulo}" />
+                            <Label x:Name="LblDica" Text="Preencha os dados e toque em Salvar" Style="{StaticResource Suave}" />
+                        </VerticalStackLayout>
+                    </Grid>
 
-        <SearchBar Grid.Row="1" x:Name="TxtBusca" Placeholder="Buscar por nome" TextChanged="OnBuscaChanged" />
+                    <VerticalStackLayout>
+                        <Label Text="Nome" Style="{StaticResource Rotulo}" />
+                        <Border Style="{StaticResource Campo}">
+                            <Entry x:Name="TxtNome" Placeholder="Ex: Maria Silva" MaxLength="50" />
+                        </Border>
+                    </VerticalStackLayout>
 
-        <!-- Lista -->
-        <CollectionView Grid.Row="2" x:Name="Lista" SelectionMode="None">
-            <CollectionView.EmptyView>
-                <Label Text="Nenhum cliente cadastrado." HorizontalOptions="Center" Margin="0,24" />
-            </CollectionView.EmptyView>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="m:Cliente">
-                    <Border Padding="12" Margin="0,4" StrokeShape="RoundRectangle 8">
-                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-                            <VerticalStackLayout VerticalOptions="Center">
-                                <Label Text="{Binding Nome}" FontAttributes="Bold" />
-                                <Label Text="{Binding RG, StringFormat='RG: {0}'}" FontSize="12" />
-                                <Label Text="{Binding Telefone, StringFormat='Telefone: {0}'}" FontSize="12" />
-                            </VerticalStackLayout>
-                            <Button Grid.Column="1" Text="Editar" Clicked="OnEditarClicked" />
-                            <Button Grid.Column="2" Text="Excluir" Clicked="OnExcluirClicked" BackgroundColor="#C62828" />
-                        </Grid>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout>
+                            <Label Text="RG" Style="{StaticResource Rotulo}" />
+                            <Border Style="{StaticResource Campo}">
+                                <Entry x:Name="TxtRg" Placeholder="Somente números" Keyboard="Numeric" MaxLength="10" />
+                            </Border>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Telefone" Style="{StaticResource Rotulo}" />
+                            <Border Style="{StaticResource Campo}">
+                                <Entry x:Name="TxtTelefone" Placeholder="(41)99999-9999" Keyboard="Telephone" MaxLength="14" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10" Margin="0,4,0,0">
+                        <Button x:Name="BtnSalvar" Text="Cadastrar cliente" Clicked="OnSalvarClicked" />
+                        <Button Grid.Column="1" Text="Limpar" Style="{StaticResource BotaoSecundario}" Clicked="OnLimparClicked" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Busca -->
+            <Border Style="{StaticResource Campo}"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Cartao}, Dark={StaticResource CartaoDark}}">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="6">
+                    <Label Text="🔍" VerticalOptions="Center" Margin="4,0,0,0" />
+                    <Entry Grid.Column="1" x:Name="TxtBusca" Placeholder="Buscar cliente pelo nome" TextChanged="OnBuscaChanged" />
+                </Grid>
+            </Border>
+
+            <Label x:Name="LblContagem" Text="Clientes cadastrados" Style="{StaticResource TituloSecao}" />
+
+            <!-- Lista -->
+            <VerticalStackLayout x:Name="Lista" Spacing="10">
+                <BindableLayout.EmptyView>
+                    <Border Style="{StaticResource Cartao}" Padding="24">
+                        <Label Text="Nenhum cliente encontrado." Style="{StaticResource Suave}" HorizontalOptions="Center" />
                     </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                </BindableLayout.EmptyView>
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="m:Cliente">
+                        <Border Style="{StaticResource Cartao}" Padding="14">
+                            <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="10">
+                                <Border Style="{StaticResource Avatar}">
+                                    <Label Text="{Binding Inicial}" Style="{StaticResource AvatarTexto}" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="{Binding Nome}" Style="{StaticResource Negrito}" />
+                                    <Label Text="{Binding RG, StringFormat='RG {0}'}" Style="{StaticResource Suave}" />
+                                    <Label Text="{Binding Telefone}" Style="{StaticResource Suave}" />
+                                </VerticalStackLayout>
+                                <Button Grid.Column="2" Text="✏️" Style="{StaticResource BotaoIcone}" Clicked="OnEditarClicked" />
+                                <Button Grid.Column="3" Text="🗑️" Style="{StaticResource BotaoIconePerigo}" Clicked="OnExcluirClicked" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
 
-    </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

@@ -18,6 +18,8 @@ namespace TDE3_BancoDeDados
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            AparenciaCampos.Configurar();
+
             // Banco de dados e serviços (validação + acesso ao banco)
             builder.Services.AddSingleton<Database>();
             builder.Services.AddSingleton<ClienteService>();

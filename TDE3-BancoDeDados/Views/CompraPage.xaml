@@ -5,59 +5,103 @@
              x:Class="TDE3_BancoDeDados.Views.CompraPage"
              Title="Compra">
 
-    <Grid RowDefinitions="Auto,Auto,*" Padding="16" RowSpacing="12">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14" MaximumWidthRequest="760">
 
-        <!-- Dados da compra -->
-        <Border Padding="12" StrokeShape="RoundRectangle 8">
-            <VerticalStackLayout Spacing="8">
-                <Label x:Name="LblCompra" Text="Nova compra" FontSize="18" FontAttributes="Bold" />
-                <Picker x:Name="PckCliente" Title="Cliente" />
-                <HorizontalStackLayout Spacing="8">
-                    <Label Text="Data:" VerticalOptions="Center" />
-                    <DatePicker x:Name="DtpData" Format="dd/MM/yyyy" />
-                </HorizontalStackLayout>
-                <Label x:Name="LblTotal" Text="Valor total: R$ 0,00" FontSize="16" FontAttributes="Bold" />
-                <Button Text="Salvar compra" Clicked="OnSalvarCompraClicked" />
-            </VerticalStackLayout>
-        </Border>
+            <!-- Dados da compra -->
+            <Border Style="{StaticResource Cartao}">
+                <VerticalStackLayout Spacing="12">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Border Style="{StaticResource Avatar}">
+                            <Label Text="🧾" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label x:Name="LblCompra" Text="Nova compra" Style="{StaticResource Titulo}" />
+                            <Label x:Name="LblStatus" Text="Escolha o cliente e a data e salve a compra" Style="{StaticResource Suave}" />
+                        </VerticalStackLayout>
+                    </Grid>
 
-        <!-- Inclusão / edição de item -->
-        <Border Grid.Row="1" x:Name="PainelItem" Padding="12" StrokeShape="RoundRectangle 8" IsEnabled="False">
-            <VerticalStackLayout Spacing="8">
-                <Label x:Name="LblItem" Text="Adicionar item (salve a compra primeiro)" FontAttributes="Bold" />
-                <Picker x:Name="PckProduto" Title="Produto" />
-                <Entry x:Name="TxtQuantidade" Placeholder="Quantidade" Keyboard="Numeric" />
-                <HorizontalStackLayout Spacing="8">
-                    <Button x:Name="BtnSalvarItem" Text="Adicionar item" Clicked="OnSalvarItemClicked" />
-                    <Button Text="Cancelar" Clicked="OnCancelarItemClicked" BackgroundColor="Gray" />
-                </HorizontalStackLayout>
-            </VerticalStackLayout>
-        </Border>
+                    <VerticalStackLayout>
+                        <Label Text="Cliente" Style="{StaticResource Rotulo}" />
+                        <Border Style="{StaticResource Campo}">
+                            <Picker x:Name="PckCliente" Title="Selecione o cliente" />
+                        </Border>
+                    </VerticalStackLayout>
 
-        <!-- Itens da compra -->
-        <CollectionView Grid.Row="2" x:Name="ListaItens" SelectionMode="None">
-            <CollectionView.Header>
-                <Label Text="Itens da compra" FontAttributes="Bold" Margin="0,0,0,4" />
-            </CollectionView.Header>
-            <CollectionView.EmptyView>
-                <Label Text="Nenhum item adicionado." HorizontalOptions="Center" Margin="0,24" />
-            </CollectionView.EmptyView>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="m:ItemCompra">
-                    <Border Padding="12" Margin="0,4" StrokeShape="RoundRectangle 8">
-                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-                            <VerticalStackLayout VerticalOptions="Center">
-                                <Label Text="{Binding Produto.NomeProduto}" FontAttributes="Bold" />
-                                <Label Text="{Binding Quantidade, StringFormat='Quantidade: {0}'}" FontSize="12" />
-                                <Label Text="{Binding ValorParcial, StringFormat='Valor parcial: {0:C}'}" FontSize="12" />
-                            </VerticalStackLayout>
-                            <Button Grid.Column="1" Text="Editar" Clicked="OnEditarItemClicked" />
-                            <Button Grid.Column="2" Text="Excluir" Clicked="OnExcluirItemClicked" BackgroundColor="#C62828" />
+                    <VerticalStackLayout>
+                        <Label Text="Data da compra" Style="{StaticResource Rotulo}" />
+                        <Border Style="{StaticResource Campo}">
+                            <DatePicker x:Name="DtpData" Format="dd/MM/yyyy" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Border StrokeThickness="0" StrokeShape="RoundRectangle 10" Padding="14,10"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource PrimarioSuave}, Dark={StaticResource PrimarioSuaveDark}}">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Valor total" Style="{StaticResource Suave}" VerticalOptions="Center" />
+                            <Label Grid.Column="1" x:Name="LblTotal" Text="R$ 0,00" Style="{StaticResource Numero}" FontSize="22" />
                         </Grid>
                     </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
 
-    </Grid>
+                    <Button x:Name="BtnSalvarCompra" Text="Salvar compra" Clicked="OnSalvarCompraClicked" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Inclusão / edição de item -->
+            <Border Style="{StaticResource Cartao}" x:Name="PainelItem" IsEnabled="False" Opacity="0.5">
+                <VerticalStackLayout Spacing="12">
+                    <Label x:Name="LblItem" Text="Adicionar item" Style="{StaticResource Titulo}" FontSize="17" />
+
+                    <VerticalStackLayout>
+                        <Label Text="Produto" Style="{StaticResource Rotulo}" />
+                        <Border Style="{StaticResource Campo}">
+                            <Picker x:Name="PckProduto" Title="Selecione o produto" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout>
+                        <Label Text="Quantidade" Style="{StaticResource Rotulo}" />
+                        <Border Style="{StaticResource Campo}">
+                            <Entry x:Name="TxtQuantidade" Placeholder="Ex: 2" Keyboard="Numeric" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <Button x:Name="BtnSalvarItem" Text="Adicionar item" Clicked="OnSalvarItemClicked" />
+                        <Button Grid.Column="1" Text="Cancelar" Style="{StaticResource BotaoSecundario}" Clicked="OnCancelarItemClicked" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <Label x:Name="LblContagemItens" Text="Itens da compra" Style="{StaticResource TituloSecao}" />
+
+            <!-- Itens da compra -->
+            <VerticalStackLayout x:Name="ListaItens" Spacing="10">
+                <BindableLayout.EmptyView>
+                    <Border Style="{StaticResource Cartao}" Padding="24">
+                        <Label Text="Nenhum item adicionado." Style="{StaticResource Suave}" HorizontalOptions="Center" />
+                    </Border>
+                </BindableLayout.EmptyView>
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="m:ItemCompra">
+                        <Border Style="{StaticResource Cartao}" Padding="14">
+                            <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="10">
+                                <Border Style="{StaticResource Avatar}">
+                                    <Label Text="📦" FontSize="18" HorizontalOptions="Center" VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="{Binding Produto.NomeProduto}" Style="{StaticResource Negrito}" />
+                                    <Label Text="{Binding Detalhe}" Style="{StaticResource Suave}" />
+                                    <Label Text="{Binding ValorParcial, StringFormat='{0:C}'}" Style="{StaticResource Valor}" />
+                                </VerticalStackLayout>
+                                <Button Grid.Column="2" Text="✏️" Style="{StaticResource BotaoIcone}" Clicked="OnEditarItemClicked" />
+                                <Button Grid.Column="3" Text="🗑️" Style="{StaticResource BotaoIconePerigo}" Clicked="OnExcluirItemClicked" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

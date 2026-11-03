@@ -5,38 +5,44 @@
              x:Class="TDE3_BancoDeDados.Views.ComprasPage"
              Title="Compras">
 
-    <Grid RowDefinitions="Auto,*" Padding="16" RowSpacing="12">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14" MaximumWidthRequest="760">
 
-        <Button Text="Nova compra" Clicked="OnNovaClicked" />
+            <Button Text="＋  Nova compra" HeightRequest="52" FontSize="15" Clicked="OnNovaClicked" />
 
-        <CollectionView Grid.Row="1" x:Name="Lista" SelectionMode="None">
-            <CollectionView.EmptyView>
-                <Label Text="Nenhuma compra registrada." HorizontalOptions="Center" Margin="0,24" />
-            </CollectionView.EmptyView>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="m:Compra">
-                    <Border Padding="12" Margin="0,4" StrokeShape="RoundRectangle 8">
-                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-                            <VerticalStackLayout VerticalOptions="Center">
-                                <Label FontAttributes="Bold">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="{Binding CodigoCompra, StringFormat='Compra #{0} - '}" />
-                                            <Span Text="{Binding DataCompra, StringFormat='{0:dd/MM/yyyy}'}" />
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
-                                <Label Text="{Binding Cliente.Nome, StringFormat='Cliente: {0}'}" FontSize="12" />
-                                <Label Text="{Binding Itens.Count, StringFormat='Itens: {0}'}" FontSize="12" />
-                                <Label Text="{Binding ValorTotal, StringFormat='Total: {0:C}'}" FontSize="12" />
-                            </VerticalStackLayout>
-                            <Button Grid.Column="1" Text="Abrir" Clicked="OnAbrirClicked" />
-                            <Button Grid.Column="2" Text="Excluir" Clicked="OnExcluirClicked" BackgroundColor="#C62828" />
-                        </Grid>
+            <Label x:Name="LblContagem" Text="Compras registradas" Style="{StaticResource TituloSecao}" />
+
+            <VerticalStackLayout x:Name="Lista" Spacing="10">
+                <BindableLayout.EmptyView>
+                    <Border Style="{StaticResource Cartao}" Padding="24">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="🧾" FontSize="32" HorizontalOptions="Center" />
+                            <Label Text="Nenhuma compra registrada ainda." Style="{StaticResource Suave}" HorizontalOptions="Center" />
+                        </VerticalStackLayout>
                     </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                </BindableLayout.EmptyView>
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="m:Compra">
+                        <Border Style="{StaticResource Cartao}" Padding="14">
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                <Border Style="{StaticResource Avatar}" StrokeShape="RoundRectangle 12">
+                                    <Label Text="{Binding CodigoCompra, StringFormat='#{0}'}" Style="{StaticResource AvatarTexto}" FontSize="14" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="{Binding Cliente.Nome}" Style="{StaticResource Negrito}" />
+                                    <Label Text="{Binding Resumo}" Style="{StaticResource Suave}" />
+                                    <Label Text="{Binding ValorTotal, StringFormat='{0:C}'}" Style="{StaticResource Valor}" />
+                                </VerticalStackLayout>
+                                <HorizontalStackLayout Grid.Column="2" Spacing="8" VerticalOptions="Center">
+                                    <Button Text="✏️" Style="{StaticResource BotaoIcone}" Clicked="OnAbrirClicked" />
+                                    <Button Text="🗑️" Style="{StaticResource BotaoIconePerigo}" Clicked="OnExcluirClicked" />
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
 
-    </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

@@ -3,49 +3,106 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:m="clr-namespace:TDE3_BancoDeDados.Models"
              x:Class="TDE3_BancoDeDados.Views.ProdutosPage"
-             Title="Cadastro de Produtos">
+             Title="Produtos">
 
-    <Grid RowDefinitions="Auto,Auto,*" Padding="16" RowSpacing="12">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14" MaximumWidthRequest="760">
 
-        <!-- Formulário -->
-        <VerticalStackLayout Spacing="8">
-            <Label x:Name="LblModo" Text="Novo produto" FontSize="18" FontAttributes="Bold" />
-            <Entry x:Name="TxtNome" Placeholder="Nome do produto" MaxLength="50" />
-            <Entry x:Name="TxtTipo" Placeholder="Tipo (ex: Bebida, Limpeza)" MaxLength="50" />
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
-                <Entry x:Name="TxtPreco" Placeholder="Preço (ex: 19,90)" Keyboard="Numeric" />
-                <Entry Grid.Column="1" x:Name="TxtEstoque" Placeholder="Qtd. em estoque" Keyboard="Numeric" />
-            </Grid>
-            <HorizontalStackLayout Spacing="8">
-                <Button Text="Salvar" Clicked="OnSalvarClicked" />
-                <Button Text="Limpar" Clicked="OnLimparClicked" BackgroundColor="Gray" />
-            </HorizontalStackLayout>
-        </VerticalStackLayout>
+            <!-- Formulário -->
+            <Border Style="{StaticResource Cartao}">
+                <VerticalStackLayout Spacing="12">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Border Style="{StaticResource Avatar}">
+                            <Label Text="📦" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label x:Name="LblModo" Text="Novo produto" Style="{StaticResource Titulo}" />
+                            <Label x:Name="LblDica" Text="Preencha os dados e toque em Salvar" Style="{StaticResource Suave}" />
+                        </VerticalStackLayout>
+                    </Grid>
 
-        <SearchBar Grid.Row="1" x:Name="TxtBusca" Placeholder="Buscar por nome ou tipo" TextChanged="OnBuscaChanged" />
+                    <VerticalStackLayout>
+                        <Label Text="Nome do produto" Style="{StaticResource Rotulo}" />
+                        <Border Style="{StaticResource Campo}">
+                            <Entry x:Name="TxtNome" Placeholder="Ex: Café 500g" MaxLength="50" />
+                        </Border>
+                    </VerticalStackLayout>
 
-        <!-- Lista -->
-        <CollectionView Grid.Row="2" x:Name="Lista" SelectionMode="None">
-            <CollectionView.EmptyView>
-                <Label Text="Nenhum produto cadastrado." HorizontalOptions="Center" Margin="0,24" />
-            </CollectionView.EmptyView>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="m:Produto">
-                    <Border Padding="12" Margin="0,4" StrokeShape="RoundRectangle 8">
-                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-                            <VerticalStackLayout VerticalOptions="Center">
-                                <Label Text="{Binding NomeProduto}" FontAttributes="Bold" />
-                                <Label Text="{Binding Tipo, StringFormat='Tipo: {0}'}" FontSize="12" />
-                                <Label Text="{Binding Preco, StringFormat='Preço: {0:C}'}" FontSize="12" />
-                                <Label Text="{Binding QtdEstoque, StringFormat='Estoque: {0}'}" FontSize="12" />
-                            </VerticalStackLayout>
-                            <Button Grid.Column="1" Text="Editar" Clicked="OnEditarClicked" />
-                            <Button Grid.Column="2" Text="Excluir" Clicked="OnExcluirClicked" BackgroundColor="#C62828" />
-                        </Grid>
+                    <VerticalStackLayout>
+                        <Label Text="Tipo" Style="{StaticResource Rotulo}" />
+                        <Border Style="{StaticResource Campo}">
+                            <Entry x:Name="TxtTipo" Placeholder="Ex: Mercearia, Limpeza, Bebida" MaxLength="50" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout>
+                            <Label Text="Preço (R$)" Style="{StaticResource Rotulo}" />
+                            <Border Style="{StaticResource Campo}">
+                                <Entry x:Name="TxtPreco" Placeholder="0,00" Keyboard="Numeric" />
+                            </Border>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Qtd. em estoque" Style="{StaticResource Rotulo}" />
+                            <Border Style="{StaticResource Campo}">
+                                <Entry x:Name="TxtEstoque" Placeholder="0" Keyboard="Numeric" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10" Margin="0,4,0,0">
+                        <Button x:Name="BtnSalvar" Text="Cadastrar produto" Clicked="OnSalvarClicked" />
+                        <Button Grid.Column="1" Text="Limpar" Style="{StaticResource BotaoSecundario}" Clicked="OnLimparClicked" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Busca -->
+            <Border Style="{StaticResource Campo}"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Cartao}, Dark={StaticResource CartaoDark}}">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="6">
+                    <Label Text="🔍" VerticalOptions="Center" Margin="4,0,0,0" />
+                    <Entry Grid.Column="1" x:Name="TxtBusca" Placeholder="Buscar por nome ou tipo" TextChanged="OnBuscaChanged" />
+                </Grid>
+            </Border>
+
+            <Label x:Name="LblContagem" Text="Produtos cadastrados" Style="{StaticResource TituloSecao}" />
+
+            <!-- Lista -->
+            <VerticalStackLayout x:Name="Lista" Spacing="10">
+                <BindableLayout.EmptyView>
+                    <Border Style="{StaticResource Cartao}" Padding="24">
+                        <Label Text="Nenhum produto encontrado." Style="{StaticResource Suave}" HorizontalOptions="Center" />
                     </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                </BindableLayout.EmptyView>
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="m:Produto">
+                        <Border Style="{StaticResource Cartao}" Padding="14">
+                            <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="10">
+                                <Border Style="{StaticResource Avatar}">
+                                    <Label Text="📦" FontSize="18" HorizontalOptions="Center" VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="{Binding NomeProduto}" Style="{StaticResource Negrito}" />
+                                    <Label Style="{StaticResource Suave}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Tipo}" />
+                                                <Span Text="  ·  " />
+                                                <Span Text="{Binding QtdEstoque, StringFormat='{0} em estoque'}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label Text="{Binding Preco, StringFormat='{0:C}'}" Style="{StaticResource Valor}" />
+                                </VerticalStackLayout>
+                                <Button Grid.Column="2" Text="✏️" Style="{StaticResource BotaoIcone}" Clicked="OnEditarClicked" />
+                                <Button Grid.Column="3" Text="🗑️" Style="{StaticResource BotaoIconePerigo}" Clicked="OnExcluirClicked" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
 
-    </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

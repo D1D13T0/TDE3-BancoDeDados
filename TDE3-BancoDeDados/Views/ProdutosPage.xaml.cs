@@ -22,13 +22,17 @@ namespace TDE3_BancoDeDados.Views
 
         async Task CarregarAsync()
         {
-            Lista.ItemsSource = await _service.ListarAsync(TxtBusca.Text);
+            var produtos = await _service.ListarAsync(TxtBusca.Text);
+            BindableLayout.SetItemsSource(Lista, produtos);
+            LblContagem.Text = $"Produtos cadastrados ({produtos.Count})";
         }
 
         void LimparFormulario()
         {
             _codigoEditando = 0;
             LblModo.Text = "Novo produto";
+            LblDica.Text = "Preencha os dados e toque em Salvar";
+            BtnSalvar.Text = "Cadastrar produto";
             TxtNome.Text = TxtTipo.Text = TxtPreco.Text = TxtEstoque.Text = string.Empty;
         }
 
@@ -55,6 +59,8 @@ namespace TDE3_BancoDeDados.Views
 
             _codigoEditando = produto.CodigoProduto;
             LblModo.Text = $"Editando produto #{produto.CodigoProduto}";
+            LblDica.Text = "Altere os dados e toque em Salvar alterações";
+            BtnSalvar.Text = "Salvar alterações";
             TxtNome.Text = produto.NomeProduto;
             TxtTipo.Text = produto.Tipo;
             TxtPreco.Text = produto.Preco.ToString("0.00");

@@ -21,7 +21,9 @@ namespace TDE3_BancoDeDados.Views
 
         async Task CarregarAsync()
         {
-            Lista.ItemsSource = await _service.ListarAsync();
+            var compras = await _service.ListarAsync();
+            BindableLayout.SetItemsSource(Lista, compras);
+            LblContagem.Text = $"Compras registradas ({compras.Count})";
         }
 
         async void OnNovaClicked(object? sender, EventArgs e) =>

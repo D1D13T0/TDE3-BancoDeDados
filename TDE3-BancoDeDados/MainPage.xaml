@@ -2,36 +2,111 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TDE3_BancoDeDados.MainPage"
+             Shell.NavBarIsVisible="False"
              Title="Menu Principal">
 
     <ScrollView>
-        <VerticalStackLayout Padding="24" Spacing="16" VerticalOptions="Center" MaximumWidthRequest="500">
+        <VerticalStackLayout>
 
-            <Label Text="Loja - Banco de Dados"
-                   FontSize="26"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center" />
+            <!-- Cabeçalho -->
+            <Border StrokeThickness="0" StrokeShape="RoundRectangle 0,0,28,28" Padding="24,36,24,64">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="{StaticResource Primary}" Offset="0" />
+                        <GradientStop Color="{StaticResource Tertiary}" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <VerticalStackLayout Spacing="4" MaximumWidthRequest="720">
+                    <Label Text="🛒" FontSize="38" />
+                    <Label Text="Loja" FontSize="30" FontFamily="OpenSansSemibold" TextColor="White" />
+                    <Label Text="Gerencie clientes, produtos e vendas em um só lugar."
+                           FontSize="15" TextColor="White" Opacity="0.85" />
+                </VerticalStackLayout>
+            </Border>
 
-            <Label Text="Escolha uma opção"
-                   FontSize="16"
-                   HorizontalOptions="Center"
-                   Margin="0,0,0,16" />
+            <VerticalStackLayout Padding="20,0,20,24" Spacing="14" MaximumWidthRequest="760">
 
-            <Button Text="Cadastro de Clientes"
-                    FontSize="18"
-                    HeightRequest="60"
-                    Clicked="OnClientesClicked" />
+                <!-- Resumo (sobreposto ao cabeçalho) -->
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="12" Margin="0,-44,0,0">
+                    <Border Style="{StaticResource Cartao}" Padding="14">
+                        <VerticalStackLayout>
+                            <Label x:Name="LblClientes" Text="0" Style="{StaticResource Numero}" />
+                            <Label Text="Clientes" Style="{StaticResource Suave}" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Column="1" Style="{StaticResource Cartao}" Padding="14">
+                        <VerticalStackLayout>
+                            <Label x:Name="LblProdutos" Text="0" Style="{StaticResource Numero}" />
+                            <Label Text="Produtos" Style="{StaticResource Suave}" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Row="1" Style="{StaticResource Cartao}" Padding="14">
+                        <VerticalStackLayout>
+                            <Label x:Name="LblCompras" Text="0" Style="{StaticResource Numero}" />
+                            <Label Text="Compras" Style="{StaticResource Suave}" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource Cartao}" Padding="14">
+                        <VerticalStackLayout>
+                            <Label x:Name="LblFaturado" Text="R$ 0,00" Style="{StaticResource Numero}"
+                                   TextColor="{AppThemeBinding Light={StaticResource Destaque}, Dark={StaticResource DestaqueDark}}" />
+                            <Label Text="Total vendido" Style="{StaticResource Suave}" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
 
-            <Button Text="Cadastro de Produtos"
-                    FontSize="18"
-                    HeightRequest="60"
-                    Clicked="OnProdutosClicked" />
+                <Label Text="Acesso rápido" Style="{StaticResource TituloSecao}" />
 
-            <Button Text="Compras"
-                    FontSize="18"
-                    HeightRequest="60"
-                    Clicked="OnComprasClicked" />
+                <!-- Itens do menu -->
+                <Border Style="{StaticResource Cartao}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnClientesClicked" />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                        <Border Style="{StaticResource Avatar}" WidthRequest="52" HeightRequest="52" StrokeShape="RoundRectangle 14">
+                            <Label Text="👥" FontSize="24" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                            <Label Text="Cadastro de Clientes" Style="{StaticResource Negrito}" FontSize="16" />
+                            <Label Text="Cadastre, edite e exclua clientes" Style="{StaticResource Suave}" />
+                        </VerticalStackLayout>
+                        <Label Grid.Column="2" Text="›" FontSize="30" Style="{StaticResource Suave}" VerticalOptions="Center" />
+                    </Grid>
+                </Border>
 
+                <Border Style="{StaticResource Cartao}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnProdutosClicked" />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                        <Border Style="{StaticResource Avatar}" WidthRequest="52" HeightRequest="52" StrokeShape="RoundRectangle 14">
+                            <Label Text="📦" FontSize="24" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                            <Label Text="Cadastro de Produtos" Style="{StaticResource Negrito}" FontSize="16" />
+                            <Label Text="Controle preços e estoque" Style="{StaticResource Suave}" />
+                        </VerticalStackLayout>
+                        <Label Grid.Column="2" Text="›" FontSize="30" Style="{StaticResource Suave}" VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource Cartao}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnComprasClicked" />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                        <Border Style="{StaticResource Avatar}" WidthRequest="52" HeightRequest="52" StrokeShape="RoundRectangle 14">
+                            <Label Text="🧾" FontSize="24" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                            <Label Text="Compras" Style="{StaticResource Negrito}" FontSize="16" />
+                            <Label Text="Registre vendas e seus itens" Style="{StaticResource Suave}" />
+                        </VerticalStackLayout>
+                        <Label Grid.Column="2" Text="›" FontSize="30" Style="{StaticResource Suave}" VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+            </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
 

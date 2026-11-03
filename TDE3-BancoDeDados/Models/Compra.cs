@@ -22,5 +22,9 @@ namespace TDE3_BancoDeDados.Models
         // Compra (1,1) ---- (1,n) ItemCompra; ao excluir a compra, os itens vão junto
         [OneToMany(CascadeOperations = CascadeOperation.CascadeRead | CascadeOperation.CascadeDelete)]
         public List<ItemCompra> Itens { get; set; } = new();
+
+        // Texto de apoio exibido na lista de compras
+        [Ignore]
+        public string Resumo => $"{DataCompra:dd/MM/yyyy}  ·  {Itens.Count} {(Itens.Count == 1 ? "item" : "itens")}";
     }
 }

@@ -70,18 +70,25 @@ namespace TDE3_BancoDeDados.Views
 
             var temCompra = _codigoCompra != 0;
             PainelItem.IsEnabled = temCompra;
+            PainelItem.Opacity = temCompra ? 1 : 0.5;
             LblCompra.Text = temCompra ? $"Compra #{_codigoCompra}" : "Nova compra";
+            LblStatus.Text = temCompra
+                ? "Adicione, edite ou remova os itens abaixo"
+                : "Escolha o cliente e a data e salve a compra";
+            BtnSalvarCompra.Text = temCompra ? "Salvar alterações da compra" : "Salvar compra";
 
             if (!temCompra)
             {
-                ListaItens.ItemsSource = null;
-                LblTotal.Text = $"Valor total: {0m:C}";
+                BindableLayout.SetItemsSource(ListaItens, null);
+                LblContagemItens.Text = "Itens da compra";
+                LblTotal.Text = 0m.ToString("C");
                 return;
             }
 
             var itens = await _compraService.ListarItensAsync(_codigoCompra);
-            ListaItens.ItemsSource = itens;
-            LblTotal.Text = $"Valor total: {itens.Sum(i => i.ValorParcial):C}";
+            BindableLayout.SetItemsSource(ListaItens, itens);
+            LblContagemItens.Text = $"Itens da compra ({itens.Count})";
+            LblTotal.Text = itens.Sum(i => i.ValorParcial).ToString("C");
         }
 
         void LimparItem()

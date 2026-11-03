@@ -24,5 +24,9 @@ namespace TDE3_BancoDeDados.Models
 
         [ManyToOne]
         public Compra? Compra { get; set; }
+
+        // Ex: "3 × R$ 12,50", exibido na lista de itens
+        [Ignore]
+        public string Detalhe => $"{Quantidade} × {(Quantidade > 0 ? ValorParcial / Quantidade : 0):C}";
     }
 }

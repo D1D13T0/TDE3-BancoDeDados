@@ -20,5 +20,9 @@ namespace TDE3_BancoDeDados.Models
         // Cliente (1,1) ---- (1,n) Compra
         [OneToMany]
         public List<Compra> Compras { get; set; } = new();
+
+        // Primeira letra do nome, exibida no avatar da lista
+        [Ignore]
+        public string Inicial => string.IsNullOrWhiteSpace(Nome) ? "?" : Nome.Trim()[..1].ToUpper();
     }
 }
